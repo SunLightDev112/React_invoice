@@ -39,6 +39,12 @@ const useStyles = makeStyles({
       height: "30px",
     },
   },
+  listItemText:{
+    width:'240px',
+    '& .MuiTypography-root':{
+      width:'max-content',
+    }
+  },
   input1: {
     "& .MuiInputLabel-outlined": {
       transform: "translate(7px, 8px) scale(1)",
@@ -62,7 +68,9 @@ const useStyles = makeStyles({
   },
 });
 
-const ControlBox = () => {
+const ControlBox = (props) => {
+  const { title, data } = props;
+  console.log("data", data);
   const classes = useStyles();
   const [select, setSelect] = React.useState(0);
 
@@ -93,18 +101,18 @@ const ControlBox = () => {
             className={classes.select}
           >
             <InputLabel id="demo-simple-select-outlined-label">
-              Category
+              {title} Preset 
             </InputLabel>
             <Select
               labelId="demo-simple-select-outlined-label"
               id="demo-simple-select-outlined"
               value={select}
               onChange={handleSelect}
-              label="Category"
-            >
-              <MenuItem value={0}>Ten</MenuItem>
-              <MenuItem value={1}>Twenty</MenuItem>
-              <MenuItem value={2}>Thirty</MenuItem>
+              label={`${title} Preset`}
+            > 
+            {
+              data.map((value,index) => <MenuItem value={index}>{value}</MenuItem>)
+            }
             </Select>
           </FormControl>
         </Grid>
@@ -125,30 +133,30 @@ const ControlBox = () => {
           component="subtitle1"
           style={{ margin: "5px" }}
         >
-          Category
+          {title}
         </Typography>
         <List className={classes.list}>
-          {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].map((value) => {
-            const labelId = `checkbox-list-label-${value}`;
+          {data.map((value, index) => {
+            const labelId = `checkbox-list-label-${index}`;
             return (
               <ListItem
-                key={value}
+                key={index}
                 size="small"
                 variant="outlined"
                 dense
                 button
-                onClick={handleToggle(value)}
+                onClick={handleToggle(index)}
               >
-                <ListItemIcon>
+                <ListItemIcon style={{minWidth:'30px'}}>
                   <Checkbox
                     edge="start"
-                    checked={checked.indexOf(value) !== -1}
+                    checked={checked.indexOf(index) !== -1}
                     tabIndex={-1}
                     disableRipple
                     inputProps={{ "aria-labelledby": labelId }}
                   />
                 </ListItemIcon>
-                <ListItemText id={labelId} primary={`Line item ${value + 1}`} />
+                <ListItemText id={labelId} primary={value} className={classes.listItemText}/>
               </ListItem>
             );
           })}
@@ -163,7 +171,7 @@ const ControlBox = () => {
         />
         <TextField
           id="outlined-basic"
-          placeholder="category"
+          placeholder={title}
           variant="outlined"
           className={classes.input2}
         />

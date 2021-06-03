@@ -13,7 +13,7 @@ const ProductBox = () => {
   return (
     <Grid container spacing={1}>
       <Grid item lg={12}>
-        <Typography>Load Invoice</Typography>
+        <Typography>Load Products</Typography>
       </Grid>
       <Grid item lg={12}>
         <TextareaAutosize
